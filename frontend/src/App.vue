@@ -1,10 +1,11 @@
 <template>
   <div class="wrapper">
     <h1> Приложение погода </h1>
-    <p> Узнать погоду в городе {{ city == "" ? "Тверь" : city }}</p>
+    <p> Узнать погоду в городе {{ city == "" ? "" : cityName }}</p>
     <input type="text" v-model="city" placeholder="Введите город">
-    <button v-if=" city != ''"> Получить погоду</button>
+    <button v-if=" city != ''" v-on:click="getWeather(this)"> Получить погоду</button>
     <button disabled v-else> Введите город </button>
+    <p class="error"> {{ error }}</p>
   </div>
 
 </template>
@@ -14,6 +15,22 @@ export default {
   data(){
     return{
       city: '',
+      error: ''
+    }
+  },
+  computed:{
+    cityName(){
+      return '"'+ this.city +'"'
+    }
+  },  
+  methods: {
+    getWeather(){
+      if(this.city.trim().length <2){
+        this.error = "Нужно название более одного символа";
+        return false
+      }
+      this.error = "";
+      
     }
   }
   
@@ -23,6 +40,12 @@ export default {
 
 
 <style scoped>
+.error{
+  margin-top: 20px;
+  color: #a82424;
+  font-size: 18px;
+}
+
 .wrapper {
   width: 900px;
   height: 500px;
